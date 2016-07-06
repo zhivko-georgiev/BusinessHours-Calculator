@@ -4,5 +4,5 @@ import java.time.LocalDate;
 
 public interface BusinessHoursCalculatorService {
 	
-	LocalDate calculateDeadline(long timeInterval, String startingTime);
+	String calculateDeadline(long timeInterval, String startingDateTime);
 }
