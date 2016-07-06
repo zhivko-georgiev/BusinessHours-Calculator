@@ -10,6 +10,7 @@
     <include file="classpath:config/liquibase/changelog/20160705184519_added_entity_OpeningHoursPerSpecificDate.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160705184857_added_entity_StoreClosedPerDayOfWeek.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160705185006_added_entity_StoreClosedPerSpecificDate.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160706131721_added_entity_BusinessHoursCalculator.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -1,0 +1,28 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "timeInterval",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "startingDateTime",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "expectedPickupTime",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20160706131721",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "business_hours_calculator",
+    "pagination": "no"
+}

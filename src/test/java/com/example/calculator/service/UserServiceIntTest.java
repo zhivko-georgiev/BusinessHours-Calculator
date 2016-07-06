@@ -42,7 +42,7 @@ public class UserServiceIntTest {
 
     @Inject
     private UserService userService;
-
+    
     @Test
     public void testRemoveOldPersistentTokens() {
         User admin = userRepository.findOneByLogin("admin").get();

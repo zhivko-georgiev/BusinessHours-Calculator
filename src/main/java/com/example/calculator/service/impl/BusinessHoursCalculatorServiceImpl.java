@@ -1,9 +1,21 @@
 package com.example.calculator.service.impl;
 
-import java.time.DayOfWeek;
+import com.example.calculator.service.*;
+import com.example.calculator.domain.*;
+import com.example.calculator.repository.BusinessHoursCalculatorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -13,63 +25,98 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.example.calculator.domain.BusinessHours;
-import com.example.calculator.domain.OpeningHoursPerDayOfWeek;
-import com.example.calculator.domain.OpeningHoursPerSpecificDate;
-import com.example.calculator.domain.StoreClosedPerDayOfWeek;
-import com.example.calculator.domain.StoreClosedPerSpecificDate;
-import com.example.calculator.service.BusinessHoursCalculatorService;
-import com.example.calculator.service.BusinessHoursService;
-import com.example.calculator.service.OpeningHoursPerDayOfWeekService;
-import com.example.calculator.service.OpeningHoursPerSpecificDateService;
-import com.example.calculator.service.StoreClosedPerDayOfWeekService;
-import com.example.calculator.service.StoreClosedPerSpecificDateService;
-
+/**
+ * Service Implementation for managing BusinessHoursCalculator.
+ */
 @Service
 @Transactional
-public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculatorService {
+public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculatorService{
 
-	private final Logger log = LoggerFactory.getLogger(BusinessHoursCalculatorServiceImpl.class);
-
-	@Autowired
+    private final Logger log = LoggerFactory.getLogger(BusinessHoursCalculatorServiceImpl.class);
+    
+    @Inject
+    private BusinessHoursCalculatorRepository businessHoursCalculatorRepository;
+    
+    @Inject
 	private BusinessHoursService businessHoursService;
 
-	@Autowired
-	private OpeningHoursPerDayOfWeekService оpeningHoursPerDayOfWeekService;
+    @Inject
+	private OpeningHoursPerDayOfWeekService РѕpeningHoursPerDayOfWeekService;
 
-	@Autowired
-	private OpeningHoursPerSpecificDateService оpeningHoursPerSpecificDateService;
+    @Inject
+	private OpeningHoursPerSpecificDateService РѕpeningHoursPerSpecificDateService;
 
-	@Autowired
+    @Inject
 	private StoreClosedPerDayOfWeekService storeClosedPerDayOfWeekService;
 
-	@Autowired
+    @Inject
 	private StoreClosedPerSpecificDateService storeClosedPerSpecificDateService;
 
 	private String defaultOpeningTime;
 	private String defaultClosingTime;
 
-	private Map<DayOfWeek, List<String>> openingHoursPerDayOfWeek = new HashMap<>();
+	private Map<java.time.DayOfWeek, List<String>> openingHoursPerDayOfWeek = new HashMap<>();
 	private Map<LocalDate, List<String>> openingHoursPerSpecificDate = new HashMap<>();
-	private List<DayOfWeek> storeClosedPerDaysOfWeek = new ArrayList<>();
+	private List<java.time.DayOfWeek> storeClosedPerDaysOfWeek = new ArrayList<>();
 	private List<LocalDate> storeClosedPerSpecificDates = new ArrayList<>();
+    
+    /**
+     * Save a businessHoursCalculator.
+     * 
+     * @param businessHoursCalculator the entity to save
+     * @return the persisted entity
+     */
+    public BusinessHoursCalculator save(BusinessHoursCalculator businessHoursCalculator) {
+        log.debug("Request to save BusinessHoursCalculator : {}", businessHoursCalculator);
+        BusinessHoursCalculator result = businessHoursCalculatorRepository.save(businessHoursCalculator);
+        return result;
+    }
+
+    /**
+     *  Get all the businessHoursCalculators.
+     *  
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true) 
+    public List<BusinessHoursCalculator> findAll() {
+        log.debug("Request to get all BusinessHoursCalculators");
+        List<BusinessHoursCalculator> result = businessHoursCalculatorRepository.findAll();
+        return result;
+    }
+
+    /**
+     *  Get one businessHoursCalculator by id.
+     *
+     *  @param id the id of the entity
+     *  @return the entity
+     */
+    @Transactional(readOnly = true) 
+    public BusinessHoursCalculator findOne(Long id) {
+        log.debug("Request to get BusinessHoursCalculator : {}", id);
+        BusinessHoursCalculator businessHoursCalculator = businessHoursCalculatorRepository.findOne(id);
+        return businessHoursCalculator;
+    }
+
+    /**
+     *  Delete the  businessHoursCalculator by id.
+     *  
+     *  @param id the id of the entity
+     */
+    public void delete(Long id) {
+        log.debug("Request to delete BusinessHoursCalculator : {}", id);
+        businessHoursCalculatorRepository.delete(id);
+    }
 
 	@Override
-	public String calculateDeadline(long timeInterval, String startingDateTime) {
+	public ZonedDateTime calculateDeadline(long timeInterval, String startingDateTime) {
 		intializeDefaultOpeningHours(businessHoursService);
-		initializeOpeningHoursPerDayOfWeek(openingHoursPerDayOfWeek, оpeningHoursPerDayOfWeekService);
-		initializeOpeningHoursPerSpecificDate(openingHoursPerSpecificDate, оpeningHoursPerSpecificDateService);
+		initializeOpeningHoursPerDayOfWeek(openingHoursPerDayOfWeek, РѕpeningHoursPerDayOfWeekService);
+		initializeOpeningHoursPerSpecificDate(openingHoursPerSpecificDate, РѕpeningHoursPerSpecificDateService);
 		initializeStoreClosedPerDaysOfWeek(storeClosedPerDaysOfWeek, storeClosedPerDayOfWeekService);
 		initializeStoreClosedPerSpecificDates(storeClosedPerSpecificDates, storeClosedPerSpecificDateService);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm", Locale.US);
-		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("E MMM dd hh:mm:ss yyyy", Locale.US);
+//		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("E MMM dd hh:mm:ss yyyy", Locale.US);
 
 		LocalDateTime parsedStartingDateTime = LocalDateTime.parse(startingDateTime, formatter);
 		DayOfWeek startingDayOfWeek = parsedStartingDateTime.getDayOfWeek();
@@ -104,10 +151,8 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 			}
 		} while (timeInterval != 0);
 
-		String parsedDateTime = outputFormatter.format(parsedStartingDateTime);
 
-		return parsedDateTime;
-
+		return ZonedDateTime.of(parsedStartingDateTime, ZoneId.systemDefault());
 	}
 	
 	private LocalDateTime adjustStaringHoursForTheGivenDate(LocalDateTime parsedStartingDateTime) {
@@ -268,9 +313,9 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 	}
 
 	private void initializeOpeningHoursPerSpecificDate(Map<LocalDate, List<String>> openingHoursPerSpecificDate,
-			OpeningHoursPerSpecificDateService оpeningHoursPerSpecificDateService) {
+			OpeningHoursPerSpecificDateService РѕpeningHoursPerSpecificDateService) {
 
-		List<OpeningHoursPerSpecificDate> openingHoursPerSpecificDates = оpeningHoursPerSpecificDateService.findAll();
+		List<OpeningHoursPerSpecificDate> openingHoursPerSpecificDates = РѕpeningHoursPerSpecificDateService.findAll();
 
 		if (openingHoursPerSpecificDate != null) {
 			for (OpeningHoursPerSpecificDate element : openingHoursPerSpecificDates) {
@@ -281,9 +326,9 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 	}
 
 	private void initializeOpeningHoursPerDayOfWeek(Map<DayOfWeek, List<String>> openingHoursPerDayOfWeek,
-			OpeningHoursPerDayOfWeekService оpeningHoursPerDayOfWeekService) {
+			OpeningHoursPerDayOfWeekService РѕpeningHoursPerDayOfWeekService) {
 
-		List<OpeningHoursPerDayOfWeek> openingHoursPerDayOfWeeks = оpeningHoursPerDayOfWeekService.findAll();
+		List<OpeningHoursPerDayOfWeek> openingHoursPerDayOfWeeks = РѕpeningHoursPerDayOfWeekService.findAll();
 
 		if (openingHoursPerDayOfWeeks != null) {
 			for (OpeningHoursPerDayOfWeek element : openingHoursPerDayOfWeeks) {
