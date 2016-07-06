@@ -17,6 +17,10 @@
         function loadAll() {
             BusinessHours.query(function(result) {
                 vm.businessHours = result;
+
+                if (vm.businessHours.length === 1) {
+                    vm.addedDefaultBusinessHours = true;
+                }
             });
         }
     }

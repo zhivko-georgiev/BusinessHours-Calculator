@@ -22,6 +22,7 @@
             BusinessHours.delete({id: id},
                 function () {
                     $uibModalInstance.close(true);
+                    vm.addedDefaultBusinessHours = false;
                 });
         }
     }

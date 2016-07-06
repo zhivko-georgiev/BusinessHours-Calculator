@@ -35,6 +35,7 @@
             $scope.$emit('businessHoursCalculatorApp:businessHoursUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
+            vm.addedDefaultBusinessHours = true;
         }
 
         function onSaveError () {
