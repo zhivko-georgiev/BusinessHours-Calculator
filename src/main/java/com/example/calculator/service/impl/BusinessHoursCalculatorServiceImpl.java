@@ -116,7 +116,6 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 		initializeStoreClosedPerSpecificDates(storeClosedPerSpecificDates, storeClosedPerSpecificDateService);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm", Locale.US);
-//		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("E MMM dd hh:mm:ss yyyy", Locale.US);
 
 		LocalDateTime parsedStartingDateTime = LocalDateTime.parse(startingDateTime, formatter);
 		DayOfWeek startingDayOfWeek = parsedStartingDateTime.getDayOfWeek();

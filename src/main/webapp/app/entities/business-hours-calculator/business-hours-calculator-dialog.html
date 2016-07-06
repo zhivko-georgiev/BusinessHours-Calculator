@@ -8,13 +8,8 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.businessHoursCalculator.id">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.businessHoursCalculator.id" readonly />
-        </div>
         <div class="form-group">
-            <label class="control-label" for="field_timeInterval">Time Interval</label>
+            <label class="control-label" for="field_timeInterval">Time Interval In Seconds</label>
             <input type="number" class="form-control" name="timeInterval" id="field_timeInterval"
                     ng-model="vm.businessHoursCalculator.timeInterval"
                     required />

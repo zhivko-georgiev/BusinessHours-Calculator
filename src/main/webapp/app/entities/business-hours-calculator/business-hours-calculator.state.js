@@ -17,7 +17,7 @@
                 pageTitle: 'BusinessHoursCalculators'
             },
             views: {
-                'content@': {
+                'business-hours-calculator@': {
                     templateUrl: 'app/entities/business-hours-calculator/business-hours-calculators.html',
                     controller: 'BusinessHoursCalculatorController',
                     controllerAs: 'vm'
