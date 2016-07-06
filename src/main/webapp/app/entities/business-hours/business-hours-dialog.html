@@ -1,0 +1,53 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myBusinessHoursLabel">Create or edit a Business Hours</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" for="field_defaultOpeningHours">Default Opening Hours</label>
+            <input type="text" class="form-control" name="defaultOpeningHours" id="field_defaultOpeningHours"
+                    ng-model="vm.businessHours.defaultOpeningHours"
+                    required ng-pattern="/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/" />
+            <div ng-show="editForm.defaultOpeningHours.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.defaultOpeningHours.$error.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.defaultOpeningHours.$error.pattern">
+                    This field should follow the 24 hour pattern "HH:mm".
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="field_defaultClosingHours">Default Closing Hours</label>
+            <input type="text" class="form-control" name="defaultClosingHours" id="field_defaultClosingHours"
+                    ng-model="vm.businessHours.defaultClosingHours"
+                    required ng-pattern="/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/" />
+            <div ng-show="editForm.defaultClosingHours.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.defaultClosingHours.$error.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.defaultClosingHours.$error.pattern">
+                    This field should follow the 24 hour pattern "HH:mm".
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

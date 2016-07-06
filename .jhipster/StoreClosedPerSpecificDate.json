@@ -1,0 +1,17 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20160705185006",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "store_closed_per_specific_date",
+    "pagination": "no"
+}

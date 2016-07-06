@@ -1,0 +1,47 @@
+<div>
+    <h2>Store Closed Per Days Of Week</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="dashboard-store-closed-per-days-of-week.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Store Closed Per Day Of Week
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span>Day Of Week</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="storeClosedPerDaysOfWeek in vm.storeClosedPerDaysOfWeeks track by storeClosedPerDaysOfWeek.id">
+                    <td translate="{{'businessHoursCalculatorApp.DayOfWeek.' + storeClosedPerDaysOfWeek.dayOfWeek}}">{{storeClosedPerDaysOfWeek.dayOfWeek}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="dashboard-store-closed-per-days-of-week.edit({id:storeClosedPerDaysOfWeek.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="dashboard-store-closed-per-days-of-week.delete({id:storeClosedPerDaysOfWeek.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

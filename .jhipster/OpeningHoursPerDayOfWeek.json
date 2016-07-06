@@ -1,0 +1,38 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "dayOfWeek",
+            "fieldType": "DayOfWeek",
+            "fieldValues": "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "openingHours",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "pattern"
+            ],
+            "fieldValidateRulesPattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+            "fieldValidateRulesPatternJava": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        {
+            "fieldName": "closingHours",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "pattern"
+            ],
+            "fieldValidateRulesPattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+            "fieldValidateRulesPatternJava": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+        }
+    ],
+    "changelogDate": "20160705184314",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "opening_hours_per_day_of_week",
+    "pagination": "no"
+}

@@ -1,0 +1,47 @@
+<div>
+    <h2>Store Closed Per Specific Dates</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="dashboard-store-closed-per-specific-date.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Store Closed Per Specific Date
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span>Date</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="storeClosedPerSpecificDate in vm.storeClosedPerSpecificDates track by storeClosedPerSpecificDate.id">
+                    <td>{{storeClosedPerSpecificDate.date | date:'mediumDate'}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="dashboard-store-closed-per-specific-date.edit({id:storeClosedPerSpecificDate.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="dashboard-store-closed-per-specific-date.delete({id:storeClosedPerSpecificDate.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

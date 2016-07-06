@@ -1,0 +1,51 @@
+<div>
+    <h2>Opening Hours Per Day Of Week</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="dashboard-opening-hours-per-day-of-week.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Opening Hours Per Day Of Week
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span>Day Of Week</span></th>
+                    <th><span>Opening Hours</span></th>
+                    <th><span>Closing Hours</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="openingHoursPerDayOfWeek in vm.openingHoursPerDayOfWeeks track by openingHoursPerDayOfWeek.id">
+                    <td translate="{{'businessHoursCalculatorApp.DayOfWeek.' + openingHoursPerDayOfWeek.dayOfWeek}}">{{openingHoursPerDayOfWeek.dayOfWeek}}</td>
+                    <td>{{openingHoursPerDayOfWeek.openingHours}}</td>
+                    <td>{{openingHoursPerDayOfWeek.closingHours}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="dashboard-opening-hours-per-day-of-week.edit({id:openingHoursPerDayOfWeek.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="dashboard-opening-hours-per-day-of-week.delete({id:openingHoursPerDayOfWeek.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

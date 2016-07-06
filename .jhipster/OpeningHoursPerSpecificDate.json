@@ -1,0 +1,37 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "openingHours",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "pattern"
+            ],
+            "fieldValidateRulesPattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+            "fieldValidateRulesPatternJava": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        {
+            "fieldName": "closingHours",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "pattern"
+            ],
+            "fieldValidateRulesPattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+            "fieldValidateRulesPatternJava": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$"
+        }
+    ],
+    "changelogDate": "20160705184519",
+    "dto": "no",
+    "service": "serviceImpl",
+    "entityTableName": "opening_hours_per_specific_date",
+    "pagination": "no"
+}
