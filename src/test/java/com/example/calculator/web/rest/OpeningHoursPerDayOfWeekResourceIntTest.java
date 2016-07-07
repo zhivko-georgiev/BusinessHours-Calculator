@@ -46,10 +46,10 @@ public class OpeningHoursPerDayOfWeekResourceIntTest {
 
     private static final DayOfWeek DEFAULT_DAY_OF_WEEK = DayOfWeek.MONDAY;
     private static final DayOfWeek UPDATED_DAY_OF_WEEK = DayOfWeek.TUESDAY;
-    private static final String DEFAULT_OPENING_HOURS = "AAAAA";
-    private static final String UPDATED_OPENING_HOURS = "BBBBB";
-    private static final String DEFAULT_CLOSING_HOURS = "AAAAA";
-    private static final String UPDATED_CLOSING_HOURS = "BBBBB";
+    private static final String DEFAULT_OPENING_HOURS = "09:30";
+    private static final String UPDATED_OPENING_HOURS = "10:30";
+    private static final String DEFAULT_CLOSING_HOURS = "17:30";
+    private static final String UPDATED_CLOSING_HOURS = "18:30";
 
     @Inject
     private OpeningHoursPerDayOfWeekRepository openingHoursPerDayOfWeekRepository;

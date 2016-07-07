@@ -42,10 +42,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @IntegrationTest
 public class BusinessHoursResourceIntTest {
 
-    private static final String DEFAULT_DEFAULT_OPENING_HOURS = "AAAAA";
-    private static final String UPDATED_DEFAULT_OPENING_HOURS = "BBBBB";
-    private static final String DEFAULT_DEFAULT_CLOSING_HOURS = "AAAAA";
-    private static final String UPDATED_DEFAULT_CLOSING_HOURS = "BBBBB";
+    private static final String DEFAULT_DEFAULT_OPENING_HOURS = "09:30";
+    private static final String UPDATED_DEFAULT_OPENING_HOURS = "10:30";
+    private static final String DEFAULT_DEFAULT_CLOSING_HOURS = "17:30";
+    private static final String UPDATED_DEFAULT_CLOSING_HOURS = "18:30";
 
     @Inject
     private BusinessHoursRepository businessHoursRepository;

@@ -1,6 +1,7 @@
 package com.example.calculator.web.rest;
 
 import com.example.calculator.BusinessHoursCalculatorApp;
+import com.example.calculator.domain.BusinessHours;
 import com.example.calculator.domain.BusinessHoursCalculator;
 import com.example.calculator.repository.BusinessHoursCalculatorRepository;
 import com.example.calculator.service.BusinessHoursCalculatorService;
@@ -49,10 +50,10 @@ public class BusinessHoursCalculatorResourceIntTest {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("Z"));
 
 
-    private static final Long DEFAULT_TIME_INTERVAL = 1L;
+    private static final Long DEFAULT_TIME_INTERVAL = 60L;
     private static final Long UPDATED_TIME_INTERVAL = 2L;
-    private static final String DEFAULT_STARTING_DATE_TIME = "AAAAA";
-    private static final String UPDATED_STARTING_DATE_TIME = "BBBBB";
+    private static final String DEFAULT_STARTING_DATE_TIME = "1970-01-01 01:59";
+    private static final String UPDATED_STARTING_DATE_TIME = "2010-06-08 14:48";
 
     private static final ZonedDateTime DEFAULT_EXPECTED_PICKUP_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
     private static final ZonedDateTime UPDATED_EXPECTED_PICKUP_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -73,6 +74,8 @@ public class BusinessHoursCalculatorResourceIntTest {
     private MockMvc restBusinessHoursCalculatorMockMvc;
 
     private BusinessHoursCalculator businessHoursCalculator;
+    
+    private BusinessHours businessHours;
 
     @PostConstruct
     public void setup() {

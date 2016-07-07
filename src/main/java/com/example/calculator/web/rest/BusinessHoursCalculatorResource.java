@@ -3,6 +3,7 @@ package com.example.calculator.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.example.calculator.domain.BusinessHoursCalculator;
 import com.example.calculator.service.BusinessHoursCalculatorService;
+import com.example.calculator.web.rest.errors.CustomParameterizedException;
 import com.example.calculator.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,11 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -27,6 +32,10 @@ import java.util.Optional;
 public class BusinessHoursCalculatorResource {
 
     private final Logger log = LoggerFactory.getLogger(BusinessHoursCalculatorResource.class);
+    
+	private static final DateTimeFormatter STARTING_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm", Locale.US);
+
+	
         
     @Inject
     private BusinessHoursCalculatorService businessHoursCalculatorService;
@@ -47,6 +56,12 @@ public class BusinessHoursCalculatorResource {
         if (businessHoursCalculator.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("businessHoursCalculator", "idexists", "A new businessHoursCalculator cannot already have an ID")).body(null);
         }
+        
+        try {
+        	LocalDateTime.parse(businessHoursCalculator.getStartingDateTime(), STARTING_DATETIME_FORMATTER);
+		} catch (DateTimeParseException e) {
+			throw new CustomParameterizedException("Wrong format of the starting datetime: " + businessHoursCalculator.getStartingDateTime());		
+		}
         
         businessHoursCalculator.setExpectedPickupTime(businessHoursCalculatorService.calculateDeadline(businessHoursCalculator.getTimeInterval(), businessHoursCalculator.getStartingDateTime()));
         

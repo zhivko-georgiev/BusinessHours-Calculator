@@ -30,26 +30,29 @@ import java.util.Map;
  */
 @Service
 @Transactional
-public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculatorService{
+public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculatorService {
 
-    private final Logger log = LoggerFactory.getLogger(BusinessHoursCalculatorServiceImpl.class);
-    
-    @Inject
-    private BusinessHoursCalculatorRepository businessHoursCalculatorRepository;
-    
-    @Inject
+	private final Logger log = LoggerFactory.getLogger(BusinessHoursCalculatorServiceImpl.class);
+	
+	private static final String DEFAULT_OPENING_HOURS_IF_NOT_PRESENT = "09:00";
+	private static final String DEFAULT_CLOSING_HOURS_IF_NOT_PRESENT = "18:00";
+
+	@Inject
+	private BusinessHoursCalculatorRepository businessHoursCalculatorRepository;
+
+	@Inject
 	private BusinessHoursService businessHoursService;
 
-    @Inject
+	@Inject
 	private OpeningHoursPerDayOfWeekService РѕpeningHoursPerDayOfWeekService;
 
-    @Inject
+	@Inject
 	private OpeningHoursPerSpecificDateService РѕpeningHoursPerSpecificDateService;
 
-    @Inject
+	@Inject
 	private StoreClosedPerDayOfWeekService storeClosedPerDayOfWeekService;
 
-    @Inject
+	@Inject
 	private StoreClosedPerSpecificDateService storeClosedPerSpecificDateService;
 
 	private String defaultOpeningTime;
@@ -59,53 +62,56 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 	private Map<LocalDate, List<String>> openingHoursPerSpecificDate = new HashMap<>();
 	private List<java.time.DayOfWeek> storeClosedPerDaysOfWeek = new ArrayList<>();
 	private List<LocalDate> storeClosedPerSpecificDates = new ArrayList<>();
-    
-    /**
-     * Save a businessHoursCalculator.
-     * 
-     * @param businessHoursCalculator the entity to save
-     * @return the persisted entity
-     */
-    public BusinessHoursCalculator save(BusinessHoursCalculator businessHoursCalculator) {
-        log.debug("Request to save BusinessHoursCalculator : {}", businessHoursCalculator);
-        BusinessHoursCalculator result = businessHoursCalculatorRepository.save(businessHoursCalculator);
-        return result;
-    }
 
-    /**
-     *  Get all the businessHoursCalculators.
-     *  
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true) 
-    public List<BusinessHoursCalculator> findAll() {
-        log.debug("Request to get all BusinessHoursCalculators");
-        List<BusinessHoursCalculator> result = businessHoursCalculatorRepository.findAll();
-        return result;
-    }
+	/**
+	 * Save a businessHoursCalculator.
+	 * 
+	 * @param businessHoursCalculator
+	 *            the entity to save
+	 * @return the persisted entity
+	 */
+	public BusinessHoursCalculator save(BusinessHoursCalculator businessHoursCalculator) {
+		log.debug("Request to save BusinessHoursCalculator : {}", businessHoursCalculator);
+		BusinessHoursCalculator result = businessHoursCalculatorRepository.save(businessHoursCalculator);
+		return result;
+	}
 
-    /**
-     *  Get one businessHoursCalculator by id.
-     *
-     *  @param id the id of the entity
-     *  @return the entity
-     */
-    @Transactional(readOnly = true) 
-    public BusinessHoursCalculator findOne(Long id) {
-        log.debug("Request to get BusinessHoursCalculator : {}", id);
-        BusinessHoursCalculator businessHoursCalculator = businessHoursCalculatorRepository.findOne(id);
-        return businessHoursCalculator;
-    }
+	/**
+	 * Get all the businessHoursCalculators.
+	 * 
+	 * @return the list of entities
+	 */
+	@Transactional(readOnly = true)
+	public List<BusinessHoursCalculator> findAll() {
+		log.debug("Request to get all BusinessHoursCalculators");
+		List<BusinessHoursCalculator> result = businessHoursCalculatorRepository.findAll();
+		return result;
+	}
 
-    /**
-     *  Delete the  businessHoursCalculator by id.
-     *  
-     *  @param id the id of the entity
-     */
-    public void delete(Long id) {
-        log.debug("Request to delete BusinessHoursCalculator : {}", id);
-        businessHoursCalculatorRepository.delete(id);
-    }
+	/**
+	 * Get one businessHoursCalculator by id.
+	 *
+	 * @param id
+	 *            the id of the entity
+	 * @return the entity
+	 */
+	@Transactional(readOnly = true)
+	public BusinessHoursCalculator findOne(Long id) {
+		log.debug("Request to get BusinessHoursCalculator : {}", id);
+		BusinessHoursCalculator businessHoursCalculator = businessHoursCalculatorRepository.findOne(id);
+		return businessHoursCalculator;
+	}
+
+	/**
+	 * Delete the businessHoursCalculator by id.
+	 * 
+	 * @param id
+	 *            the id of the entity
+	 */
+	public void delete(Long id) {
+		log.debug("Request to delete BusinessHoursCalculator : {}", id);
+		businessHoursCalculatorRepository.delete(id);
+	}
 
 	@Override
 	public ZonedDateTime calculateDeadline(long timeInterval, String startingDateTime) {
@@ -150,10 +156,9 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 			}
 		} while (timeInterval != 0);
 
-
 		return ZonedDateTime.of(parsedStartingDateTime, ZoneId.systemDefault());
 	}
-	
+
 	private LocalDateTime adjustStaringHoursForTheGivenDate(LocalDateTime parsedStartingDateTime) {
 		int startingHour = 0;
 		int startingMinutes = 0;
@@ -180,16 +185,16 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 
 		return LocalDateTime.of(startingDate, LocalTime.of(startingHour, startingMinutes));
 	}
-	
+
 	private List<Integer> parseOpeningTime(String openingHours) {
 		String[] splittedOpeningHours = openingHours.split(":");
 		List<Integer> parsedOpeningTimes = new ArrayList<>();
 		parsedOpeningTimes.add(Integer.parseInt(splittedOpeningHours[0]));
 		parsedOpeningTimes.add(Integer.parseInt(splittedOpeningHours[1]));
-		
+
 		return parsedOpeningTimes;
 	}
-	
+
 	private long calculateBusinessMinutesForSpecificDateTime(LocalDateTime parsedStartingDateTime) {
 		long businessMinutesBeforeClosing = 0;
 
@@ -207,12 +212,13 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 				|| storeClosedPerDaysOfWeek.contains(startingDayOfWeek)) {
 			businessMinutesBeforeClosing = 0;
 		} else {
-			businessMinutesBeforeClosing = calculateBusinessMinutesTillClosing(parsedStartingDateTime, defaultClosingTime);
+			businessMinutesBeforeClosing = calculateBusinessMinutesTillClosing(parsedStartingDateTime,
+					defaultClosingTime);
 		}
 
 		return businessMinutesBeforeClosing;
 	}
-	
+
 	private long calculateBusinessMinutesTillClosing(LocalDateTime parsedStartingDateTime, String closingHours) {
 		long businessMinutesBeforeClosing = 0;
 
@@ -228,7 +234,7 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 
 		return businessMinutesBeforeClosing;
 	}
-	
+
 	private LocalDateTime adjustStartingDateTime(LocalDateTime parsedStartingDateTime, List<String> list) {
 		int startingHour = parsedStartingDateTime.getHour();
 		int startingMinutes = parsedStartingDateTime.getMinute();
@@ -265,7 +271,7 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 		return LocalDateTime.of(parsedStartingDateTime.getYear(), parsedStartingDateTime.getMonthValue(),
 				parsedStartingDateTime.getDayOfMonth(), startingHour, startingMinutes);
 	}
-	
+
 	private List<Integer> parseOpeningAndClosingTimes(List<String> list) {
 		List<Integer> parsedOpeningAndClosingTimes = new ArrayList<>();
 
@@ -329,22 +335,24 @@ public class BusinessHoursCalculatorServiceImpl implements BusinessHoursCalculat
 
 		List<OpeningHoursPerDayOfWeek> openingHoursPerDayOfWeeks = РѕpeningHoursPerDayOfWeekService.findAll();
 
-		if (openingHoursPerDayOfWeeks != null) {
-			for (OpeningHoursPerDayOfWeek element : openingHoursPerDayOfWeeks) {
-				openingHoursPerDayOfWeek.put(DayOfWeek.valueOf(element.getDayOfWeek().toString()),
-						Arrays.asList(element.getOpeningHours(), element.getClosingHours()));
-			}
+		for (OpeningHoursPerDayOfWeek element : openingHoursPerDayOfWeeks) {
+			openingHoursPerDayOfWeek.put(DayOfWeek.valueOf(element.getDayOfWeek().toString()),
+					Arrays.asList(element.getOpeningHours(), element.getClosingHours()));
 		}
 	}
 
 	private void intializeDefaultOpeningHours(BusinessHoursService businessHoursService) {
 		List<BusinessHours> businessHours = businessHoursService.findAll();
 
-		if (businessHours != null) {
+		if (businessHours.size() != 0) {
 			for (BusinessHours element : businessHours) {
 				defaultOpeningTime = element.getDefaultOpeningHours();
 				defaultClosingTime = element.getDefaultClosingHours();
 			}
+		} else {
+			defaultOpeningTime = DEFAULT_OPENING_HOURS_IF_NOT_PRESENT;
+			defaultClosingTime = DEFAULT_CLOSING_HOURS_IF_NOT_PRESENT;
 		}
+		
 	}
 }
