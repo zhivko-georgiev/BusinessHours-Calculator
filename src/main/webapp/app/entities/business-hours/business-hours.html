@@ -16,10 +16,14 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr>
+                <tr ng-if="vm.addedDefaultBusinessHours">
+                    <th><span>Opening Hours</span></th>
+                    <th><span>Closing Hours</span></th>
+                    <th></th>
+                </tr>
+                 <tr ng-if="!vm.addedDefaultBusinessHours">
                     <th><span>Default Opening Hours</span></th>
                     <th><span>Default Closing Hours</span></th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +46,10 @@
                             </button>
                         </div>
                     </td>
+                </tr>
+                <tr ng-if="!vm.addedDefaultBusinessHours">
+                    <td>09:00</td>
+                    <td>18:00</td>
                 </tr>
             </tbody>
         </table>

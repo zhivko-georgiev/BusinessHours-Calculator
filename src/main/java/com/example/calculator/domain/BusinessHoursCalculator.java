@@ -30,6 +30,9 @@ public class BusinessHoursCalculator implements Serializable {
 
     @Column(name = "expected_pickup_time")
     private ZonedDateTime expectedPickupTime;
+    
+    @Column(name = "actual_business_hours")
+    private String actualBusinessHours;
 
     public Long getId() {
         return id;
@@ -62,8 +65,16 @@ public class BusinessHoursCalculator implements Serializable {
     public void setExpectedPickupTime(ZonedDateTime expectedPickupTime) {
         this.expectedPickupTime = expectedPickupTime;
     }
+    
+	public String getActualBusinessHours() {
+		return actualBusinessHours;
+	}
 
-    @Override
+	public void setActualBusinessHours(String actualBusinessHours) {
+		this.actualBusinessHours = actualBusinessHours;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

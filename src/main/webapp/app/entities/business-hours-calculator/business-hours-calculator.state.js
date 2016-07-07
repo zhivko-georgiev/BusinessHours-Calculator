@@ -10,7 +10,7 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('dashboard-business-hours-calculator', {
-            parent: 'dashboard',
+            parent: 'app',
             url: '/business-hours-calculator',
             data: {
                 authorities: ['ROLE_USER'],
@@ -45,7 +45,8 @@
                                 timeInterval: null,
                                 startingDateTime: null,
                                 expectedPickupTime: null,
-                                id: null
+                                id: null,
+                                actualBusinessHours: null
                             };
                         }
                     }

@@ -41,11 +41,6 @@
                     templateUrl: 'app/entities/store-closed-per-specific-date/store-closed-per-specific-dates.html',
                     controller: 'StoreClosedPerSpecificDateController',
                     controllerAs: 'vm'
-                },
-                'business-hours-calculator@': {
-                    templateUrl: 'app/entities/business-hours-calculator/business-hours-calculators.html',
-                    controller: 'BusinessHoursCalculatorController',
-                    controllerAs: 'vm'
                 }
             }
         });

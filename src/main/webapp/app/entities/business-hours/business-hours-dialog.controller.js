@@ -5,9 +5,9 @@
         .module('businessHoursCalculatorApp')
         .controller('BusinessHoursDialogController', BusinessHoursDialogController);
 
-    BusinessHoursDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'BusinessHours'];
+    BusinessHoursDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'BusinessHours', 'AlertService'];
 
-    function BusinessHoursDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, BusinessHours) {
+    function BusinessHoursDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, BusinessHours, AlertService) {
         var vm = this;
 
         vm.businessHours = entity;
@@ -38,7 +38,8 @@
             vm.addedDefaultBusinessHours = true;
         }
 
-        function onSaveError () {
+        function onSaveError (data) {
+            AlertService.error(error.data.message);
             vm.isSaving = false;
         }
 

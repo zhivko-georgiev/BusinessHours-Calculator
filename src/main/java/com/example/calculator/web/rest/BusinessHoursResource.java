@@ -2,6 +2,8 @@ package com.example.calculator.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 import com.example.calculator.domain.BusinessHours;
 import com.example.calculator.service.BusinessHoursService;
+import com.example.calculator.web.rest.errors.CustomParameterizedException;
 import com.example.calculator.web.rest.util.HeaderUtil;
 
 /**
@@ -52,13 +55,16 @@ public class BusinessHoursResource {
         if (businessHours.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("businessHours", "idexists", "A new businessHours cannot already have an ID")).body(null);
         }
+        
+        validateBusinessHours(businessHours);
+        
         BusinessHours result = businessHoursService.save(businessHours);
         return ResponseEntity.created(new URI("/api/business-hours/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("businessHours", result.getId().toString()))
             .body(result);
     }
 
-    /**
+	/**
      * PUT  /business-hours : Updates an existing businessHours.
      *
      * @param businessHours the businessHours to update
@@ -131,5 +137,30 @@ public class BusinessHoursResource {
         businessHoursService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("businessHours", id.toString())).build();
     }
-
+    
+    /**
+     * Helper method user for validation of the opening hours
+     *
+     * @param businessHours the opening hours transfered from the client
+     * @throws CustomParameterizedException if the closing time is before the opening time
+     * @throws CustomParameterizedException if the duration between the opening and closing hours is less than 4 hours
+     */
+    private void validateBusinessHours(BusinessHours businessHours) {
+		String openingHours = businessHours.getDefaultOpeningHours();
+		String closingHours = businessHours.getDefaultClosingHours();
+		
+		String[] splittedOpeningHours = openingHours.split(":");
+		String[] splittedClosingHours = closingHours.split(":");
+		
+		LocalTime openingTime = LocalTime.of(Integer.parseInt(splittedOpeningHours[0]), Integer.parseInt(splittedOpeningHours[1]));
+		LocalTime closingTime = LocalTime.of(Integer.parseInt(splittedClosingHours[0]), Integer.parseInt(splittedClosingHours[1]));
+		
+		if (closingTime.isBefore(openingTime)) {
+			throw new CustomParameterizedException("The closing time cannot be before the opening time");		
+		}
+		
+		if (ChronoUnit.HOURS.between(openingTime, closingTime) < 4) {
+			throw new CustomParameterizedException("The hours between the opening and closing time should NOT be less than 4 hours");		
+		}
+	}
 }

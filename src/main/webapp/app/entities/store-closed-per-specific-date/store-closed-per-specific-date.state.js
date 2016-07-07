@@ -90,7 +90,7 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('dashboard--store-closed-per-specific-date', null, { reload: true });
+                    $state.go('dashboard-store-closed-per-specific-date', null, { reload: true });
                 }, function() {
                     $state.go('^');
                 });

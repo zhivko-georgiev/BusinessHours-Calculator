@@ -18,6 +18,7 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr>
+                    <th><span>Actual Business Hours</span></th>
                     <th><span>Time Interval In Seconds</span></th>
                     <th><span>Starting Date Time</span></th>
                     <th><span>Expected Pickup Time</span></th>
@@ -26,6 +27,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="businessHoursCalculator in vm.businessHoursCalculators track by businessHoursCalculator.id">
+                    <td style="white-space: pre">{{businessHoursCalculator.actualBusinessHours}}</td>
                     <td>{{businessHoursCalculator.timeInterval}}</td>
                     <td>{{businessHoursCalculator.startingDateTime}}</td>
                     <td>{{businessHoursCalculator.expectedPickupTime | date:'EEE MMM dd HH:mm:ss yyyy'}}</td>

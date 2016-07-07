@@ -26,7 +26,17 @@
                         <span>
                             <span class="glyphicon glyphicon-th-list"></span>
                             <span class="hidden-sm">
-                                Dashboard
+                                Business Hours Dashboard
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true">
+                    <a ui-sref="dashboard-business-hours-calculator">
+                        <span>
+                            <span class="glyphicon glyphicon-th-list"></span>
+                            <span class="hidden-sm">
+                                Business Hours Calculator
                             </span>
                         </span>
                     </a>

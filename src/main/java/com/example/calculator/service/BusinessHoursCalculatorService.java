@@ -41,5 +41,19 @@ public interface BusinessHoursCalculatorService {
     void delete(Long id);
     
     
+    /**
+     * Calculate the expected time for pickup.
+     * 
+     * @param timeInterval expected time in seconds for finishing the order
+     * @param startingDateTime date and time at which the order was placed
+     * @return date and time at which the order will be ready for pickup.
+     */
     ZonedDateTime calculateDeadline(long timeInterval, String startingDateTime);
+    
+    /**
+     * Prepares the actual working business hours for each order.
+     * 
+     * @return string containing the info about the business hours
+     */
+    String prepareBusinessHoursData();
 }

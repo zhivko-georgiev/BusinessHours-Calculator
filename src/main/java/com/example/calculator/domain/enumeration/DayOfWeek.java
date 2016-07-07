@@ -11,5 +11,8 @@ public enum DayOfWeek {
 	private DayOfWeek(int dayOfWeekIntValue) {
 		this.dayOfWeekIntValue = dayOfWeekIntValue;
 	}
-    
+
+	public int getDayOfWeekIntValue() {
+		return dayOfWeekIntValue;
+	}
 }

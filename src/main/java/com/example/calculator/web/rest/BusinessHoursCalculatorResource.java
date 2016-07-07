@@ -1,28 +1,34 @@
 package com.example.calculator.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.example.calculator.domain.BusinessHoursCalculator;
-import com.example.calculator.service.BusinessHoursCalculatorService;
-import com.example.calculator.web.rest.errors.CustomParameterizedException;
-import com.example.calculator.web.rest.util.HeaderUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.inject.Inject;
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+
+import javax.inject.Inject;
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.codahale.metrics.annotation.Timed;
+import com.example.calculator.domain.BusinessHoursCalculator;
+import com.example.calculator.service.BusinessHoursCalculatorService;
+import com.example.calculator.web.rest.errors.CustomParameterizedException;
+import com.example.calculator.web.rest.util.HeaderUtil;
 
 /**
  * REST controller for managing BusinessHoursCalculator.
@@ -35,8 +41,6 @@ public class BusinessHoursCalculatorResource {
     
 	private static final DateTimeFormatter STARTING_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm", Locale.US);
 
-	
-        
     @Inject
     private BusinessHoursCalculatorService businessHoursCalculatorService;
     
@@ -64,6 +68,7 @@ public class BusinessHoursCalculatorResource {
 		}
         
         businessHoursCalculator.setExpectedPickupTime(businessHoursCalculatorService.calculateDeadline(businessHoursCalculator.getTimeInterval(), businessHoursCalculator.getStartingDateTime()));
+        businessHoursCalculator.setActualBusinessHours(businessHoursCalculatorService.prepareBusinessHoursData());
         
         BusinessHoursCalculator result = businessHoursCalculatorService.save(businessHoursCalculator);
         return ResponseEntity.created(new URI("/api/business-hours-calculators/" + result.getId()))
@@ -71,7 +76,7 @@ public class BusinessHoursCalculatorResource {
             .body(result);
     }
 
-    /**
+	/**
      * PUT  /business-hours-calculators : Updates an existing businessHoursCalculator.
      *
      * @param businessHoursCalculator the businessHoursCalculator to update
@@ -106,10 +111,31 @@ public class BusinessHoursCalculatorResource {
     @Timed
     public List<BusinessHoursCalculator> getAllBusinessHoursCalculators() {
         log.debug("REST request to get all BusinessHoursCalculators");
-        return businessHoursCalculatorService.findAll();
+        List<BusinessHoursCalculator> businessHoursCalculators = businessHoursCalculatorService.findAll();
+        List<BusinessHoursCalculator> formattedBusinessHoursCalculators = new ArrayList<>();
+        
+        for (BusinessHoursCalculator businessHoursCalculator : businessHoursCalculators) {
+			String formattedActualBusinessHours = formatActualBusinessHours(businessHoursCalculator.getActualBusinessHours());
+			businessHoursCalculator.setActualBusinessHours(formattedActualBusinessHours);
+			formattedBusinessHoursCalculators.add(businessHoursCalculator);
+		}
+        
+        return formattedBusinessHoursCalculators;
     }
 
-    /**
+    private String formatActualBusinessHours(String actualBusinessHours) {
+		String[] splittedBusinessHours = actualBusinessHours.split("_");
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for (String string : splittedBusinessHours) {
+			sb.append(string + "\n\n");
+		}
+		
+		return sb.toString();
+	}
+
+	/**
      * GET  /business-hours-calculators/:id : get the "id" businessHoursCalculator.
      *
      * @param id the id of the businessHoursCalculator to retrieve
